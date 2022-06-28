@@ -22,9 +22,9 @@ main function reads host/port from env just for an example, flavor it following 
 func Start(host string, port int) {
 	router := mux.NewRouter()
 	router.HandleFunc("/name/{PARAM}", handleName).Methods(http.MethodGet)
-	router.HandleFunc("/bad/", handleBad).Methods(http.MethodGet)
+	router.HandleFunc("/bad", handleBad).Methods(http.MethodGet)
 	router.HandleFunc("/data", handleData).Methods(http.MethodPost)
-	router.HandleFunc("/header/", handleHeader).Methods(http.MethodPost)
+	router.HandleFunc("/headers", handleHeader).Methods(http.MethodPost)
 
 	http.NewServeMux()
 	log.Fatalln(http.ListenAndServe(":8081", router))
