@@ -53,8 +53,8 @@ func handleData(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 		return
 	}
-
-	fmt.Fprintf(w, "I got massage:\n"+string(str))
+	name := fmt.Sprintf("I got message:\n%s", string(str))
+	w.Write([]byte(name))
 
 }
 
