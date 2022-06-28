@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -48,12 +48,13 @@ func handleBad(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleData(w http.ResponseWriter, r *http.Request) {
-	str, err := io.ReadAll(r.Body)
+	str, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "I got massage:\n"+string(str))
+	fmt.Fprintf(w, "I got massage:\n%s", str)
 
 }
 
