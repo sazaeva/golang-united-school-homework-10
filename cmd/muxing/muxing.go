@@ -26,12 +26,12 @@ func Start(host string, port int) {
 	router.HandleFunc("/data", handleData).Methods(http.MethodPost)
 	router.HandleFunc("/headers", handleHeader).Methods(http.MethodPost)
 
-	http.NewServeMux()
-	log.Fatalln(http.ListenAndServe(":8081", router))
-	//log.Println(fmt.Printf("Starting API server on %s:%d\n", host, port))
-	//if err := http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), router); err != nil {
-	//	log.Fatal(err)
-	//}
+	//http.NewServeMux()
+	//log.Fatalln(http.ListenAndServe(":8081", router))
+	log.Println(fmt.Printf("Starting API server on %s:%d\n", host, port))
+	if err := http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), router); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func handleName(w http.ResponseWriter, r *http.Request) {
@@ -43,15 +43,17 @@ func handleName(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleBad(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusBadGateway)
-	w.Write([]byte("Oh, smth bad happened on server side. Please contact the developers"))
+	w.WriteHeader(http.StatusInternalServerError)
+
 }
 
 func handleData(w http.ResponseWriter, r *http.Request) {
 	str, err := io.ReadAll(r.Body)
-	if err == nil {
-		w.Write([]byte("I got massage:\n" + string(str)))
+	if err != nil {
+		log.Fatal(err)
 	}
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "I got massage:\n"+string(str))
 
 }
 
