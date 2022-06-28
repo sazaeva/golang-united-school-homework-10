@@ -50,11 +50,11 @@ func handleBad(w http.ResponseWriter, r *http.Request) {
 func handleData(w http.ResponseWriter, r *http.Request) {
 	str, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		log.Fatal(err)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "I got massage:\n%s", str)
+
+	fmt.Fprintf(w, "I got massage:\n"+string(str))
 
 }
 
